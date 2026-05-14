@@ -1,7 +1,7 @@
 """
 URL configuration for cliente project.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
+The urlpatterns list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/6.0/topics/http/urls/
 Examples:
 Function views
@@ -20,9 +20,11 @@ from django.urls import path
 from clientes import views
 
 urlpatterns = [
+
     path('admin/', admin.site.urls),
     path('atualizar-cliente/<int:id>/', views.atualizar_cliente, name='atualizar_cliente'),
-    path('excluir-cliente/<int:id>/', views.excluir_cliente, name='excluir_cliente'),
+    path('exculir-cliente/<int:id>/', views.excluir_cliente, name='excluir_cliente'),
     path('login/', views.login_usuario, name='login_usuario'),
+    path('novo-usuario/', views.novo_usuario, name='novo_usuario'),
     path('', views.novo_cliente, name='novo_cliente'),
 ]

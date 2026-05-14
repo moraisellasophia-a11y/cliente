@@ -1,20 +1,17 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
-# importação do login
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
-
-from .forms import ClienteForm
+from .forms import ClienteForm, UsuarioForm
 from .models import Cliente
-
 # Create your views here.
 
 @login_required
 def novo_cliente(request):
-    clientes = Cliente.objects.all() # SELECT * FROM clientes
+    clientes = Cliente.objects.all()
     template_name = 'novo_cliente.html'
     context = {}
     if request.method == 'POST':
@@ -23,17 +20,17 @@ def novo_cliente(request):
             form.save()
             return redirect('novo_cliente')
         else:
-            return HttpResponse('<h1>Deu erro no teu formulário<h1>')
+            return HttpResponse('<h1>,Erro no formulário<h1>')
     
     form = ClienteForm()
     context['form'] = form
-    context['clientes'] = clientes   
-    return render(request, template_name, context)
+    context['clientes'] = clientes
+    return render (request, template_name, context)
 
 @login_required
 def atualizar_cliente(request, id):
     try:
-        cliente = Cliente.objects.get(id=id) # SELECT * FROM cliente WHERE ID = id
+        cliente = Cliente.objects.get(pk=id)
     except Cliente.DoesNotExist:
         return HttpResponse('<h1>Cliente não encontrado</h1>')
     
@@ -43,14 +40,18 @@ def atualizar_cliente(request, id):
             form.save()
             return redirect('novo_cliente')
         else:
+            print(form.errors)
             return HttpResponse('<h1>Erro na atualização do cliente</h1>')
-    
+        
+
+
     form = ClienteForm(instance=cliente)
     template_name = 'novo_cliente.html'
     clientes = Cliente.objects.all()
     context = {
         'form': form,
         'clientes': clientes
+        
     }
     return render(request, template_name, context)
 
@@ -83,4 +84,23 @@ def login_usuario(request):
     
     context = {'form': form}
         
+    return render(request, template_name, context)
+
+
+
+
+def novo_usuario(request):
+    template_name = 'novo_usuario.html'
+    if request. method == 'post':
+        form = UsuarioForm(request.POST)
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.set_passowd(f.passowrd)
+            f.save()
+            return redirect('login_usuario')
+        else:
+            return HttpResponse('Erro ao criar o usuário')
+    else:
+        form = UsuarioForm()
+    context = {'form': form}
     return render(request, template_name, context)
