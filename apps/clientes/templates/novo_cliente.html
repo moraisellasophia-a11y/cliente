@@ -4,8 +4,12 @@
     <title>Cadastro de Clientes</title>
     <body>
         <div class="container">
-            <form method="post">
-            {% csrf_token %}
+            <nav class="navbar bg-body-tertiary">
+  <form class="container-fluid justify-content-start">
+    <a href="{% url 'sair' %}" class="btn btn-outline-success me-2" type="button">Sair</a>
+</nav>
+            <form method="post"
+            {% csrf_token %} 
             <h1>Preencha os dados abaixo</h1>
             <div class="mb-3"> 
                 {{ form.as_p }}
